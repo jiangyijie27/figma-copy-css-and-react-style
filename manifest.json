@@ -1,0 +1,21 @@
+{
+  "name": "Copy CSS + React Style",
+  "id": "849480985478663675",
+  "api": "1.0.0",
+  "main": "code.js",
+  "ui": "ui.html",
+  "menu": [
+    {
+      "name": "Copy CSS Style",
+      "command": "css"
+    },
+    {
+      "name": "Copy React Style",
+      "command": "react"
+    },
+    {
+      "name": "Settings",
+      "command": "setting"
+    }
+  ]
+}

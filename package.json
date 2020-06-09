@@ -1,0 +1,16 @@
+{
+  "name": "Copy-CSS-&-React-Style",
+  "version": "1.0.0",
+  "description": "Your Figma Plugin",
+  "main": "code.js",
+  "scripts": {
+    "build": "tsc -p tsconfig.json"
+  },
+  "author": "",
+  "license": "",
+  "dependencies": {
+    "@figma/plugin-typings": "^1.15.0",
+    "@types/react": "^16.9.35",
+    "csstype": "^2.6.10"
+  }
+}

@@ -1,0 +1,191 @@
+<script>
+  onmessage = event => {
+    if (event.data.pluginMessage.copiedText) {
+      const textarea = document.querySelector("#copy-area")
+      const { copiedText, type } = event.data.pluginMessage
+      textarea.value = copiedText
+      textarea.select()
+      document.execCommand("copy")
+      parent.postMessage({ pluginMessage: { quit: true, type } }, '*')
+    } else if (event.data.pluginMessage.setting) {
+      const { data } = event.data.pluginMessage
+      const { colorHex, lineBreak, quote, valueSubstitution, valueSubstitutionEnabled } = data
+
+      // initial
+      const hexShort = document.querySelector("#short")
+      const hexLong = document.querySelector("#long")
+      const quoteSingle = document.querySelector("#single")
+      const quoteDouble = document.querySelector("#double")
+      const lineBreakCheckbox = document.querySelector("#lineBreakCheckbox")
+      const valueSubstitutionCheckbox = document.querySelector("#valueSubstitutionCheckbox")
+      const valueSubstitutionTextarea = document.querySelector("#valueSubstitutionTextarea")
+      const apply = document.querySelector("#apply")
+
+      if (colorHex === "short") {
+        hexShort.checked = true
+      } else {
+        hexLong.checked = true
+      }
+      hexShort.onclick = () => { data.colorHex = "short" }
+      hexLong.onclick = () => { data.colorHex = "long" }
+
+      if (quote === "single") {
+        quoteSingle.checked = true
+      } else {
+        quoteDouble.checked = true
+      }
+      quoteSingle.onclick = () => { data.quote = "single" }
+      quoteDouble.onclick = () => { data.quote = "double" }
+
+      if (lineBreak === "true") {
+        lineBreakCheckbox.checked = true
+      } else {
+        lineBreakCheckbox.checked = false
+      }
+      lineBreakCheckbox.onclick = () => {
+        data.lineBreak = data.lineBreak === "true" ? "false" : "true"
+      }
+
+      if (valueSubstitutionEnabled === "true") {
+        valueSubstitutionCheckbox.checked = true
+        valueSubstitutionTextarea.style.display = "block"
+        if (valueSubstitution) {
+          let tav = ""
+          try {
+            tav = JSON.stringify(JSON.parse(valueSubstitution), undefined, 4)
+          } catch (error) {
+          }
+
+          valueSubstitutionTextarea.value = tav
+        }
+
+      } else {
+        valueSubstitutionCheckbox.checked = false
+      }
+      valueSubstitutionCheckbox.onclick = () => {
+        data.valueSubstitutionEnabled = data.valueSubstitutionEnabled === "true" ? "false" : "true"
+        if (data.valueSubstitutionEnabled === "true") {
+          valueSubstitutionTextarea.style.display = "block"
+        } else {
+          valueSubstitutionTextarea.style.display = "none"
+        }
+      }
+
+
+      apply.onclick = () => {
+        data.valueSubstitution = valueSubstitutionTextarea.value.trim().replace(/\n/g, "")
+        parent.postMessage({ pluginMessage: { updateSetting: data } }, '*')
+      }
+
+      cancel.onclick = () => {
+        parent.postMessage({ pluginMessage: { cancelSetting: true } }, '*')
+      }
+    }
+  }
+</script>
+<textarea id="copy-area"></textarea>
+<div class="settings-header">General</div>
+<div class="settings" id="colorHex">
+  <div class="settings-label">
+    color hex
+  </div>
+  <div class="settings-control">
+    <span class="settings-radio">
+      <input type="radio" id="short" name="colorHex" value="short">
+      <label for="short">short<span style="color: #aaa;">(#fff)</span></label>
+    </span>
+    <span class="settings-radio">
+      <input type="radio" id="long" name="colorHex" value="long">
+      <label for="long">long<span style="color: #aaa;">(#ffffff)</span></label>
+    </span>
+  </div>
+</div>
+<div class="settings" id="valueSubstitution">
+  <div class="settings-label">
+    value substitution
+  </div>
+  <div class="settings-control">
+    <input type="checkbox" name="valueSubstitution" id="valueSubstitutionCheckbox">
+    <textarea id="valueSubstitutionTextarea"
+      placeholder='to substitute a string(key) with another(value).&#10;&#10;Recommended: &#10;{&#10;    "#07c160": "var(--primary-color)"&#10;}'></textarea>
+  </div>
+</div>
+<div class="settings-header" style="margin-top: 36px;">React</div>
+<div class="settings" id="quote">
+  <div class="settings-label">
+    quote
+  </div>
+  <div class="settings-control">
+    <span class="settings-radio">
+      <input type="radio" id="single" name="quote" value="single">
+      <label for="single">single<span style="color: #aaa;">('')</span></label>
+    </span>
+    <span class="settings-radio">
+      <input type="radio" id="double" name="quote" value="double">
+      <label for="double">double<span style="color: #aaa;">("")</span></label>
+    </span>
+  </div>
+</div>
+<div class="settings">
+  <div class="settings-label">
+    line break
+  </div>
+  <div class="settings-control">
+    <input type="checkbox" name="lineBreak" id="lineBreakCheckbox">
+  </div>
+</div>
+<div class="buttons">
+  <button id="apply">Apply</button>
+  <button id="cancel">Cancel</button>
+</div>
+<style>
+  body {
+    margin: 0;
+    padding: 24px 16px;
+    -webkit-font-smoothing: antialiased;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Ubuntu, 'Helvetica Neue', Helvetica, Arial, 'PingFang SC',
+      'Hiragino Sans GB', 'Microsoft YaHei UI', 'Microsoft YaHei', 'Source Han Sans CN', sans-serif;
+  }
+
+  #copy-area {
+    position: fixed;
+    top: -9999px;
+    left: -9999px;
+    opacity: 0;
+  }
+
+  .settings {
+    display: flex;
+    align-items: baseline;
+    margin-bottom: 12px;
+    font-size: 13px;
+  }
+
+  .settings-header {
+    margin-bottom: 12px;
+    font-size: 14px;
+    font-weight: 600;
+  }
+
+  .settings-label {
+    margin-right: 12px;
+    width: 8em;
+    white-space: nowrap;
+  }
+
+  .settings-tip {
+    font-size: 12px;
+    color: #aaa;
+  }
+
+  .settings-radio:not(:last-child) {
+    margin-right: 8px;
+  }
+
+  #valueSubstitutionTextarea {
+    display: none;
+    padding: 8px 4px;
+    width: 250px;
+    height: 100px;
+  }
+</style>
