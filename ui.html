@@ -6,7 +6,7 @@
       textarea.value = copiedText
       textarea.select()
       document.execCommand("copy")
-      parent.postMessage({ pluginMessage: { quit: true, type } }, '*')
+      parent.postMessage({ pluginMessage: { quit: true, type, unused: event.data.pluginMessage.unusedStyle } }, '*')
     } else if (event.data.pluginMessage.setting) {
       const { data } = event.data.pluginMessage
       const { colorHex, lineBreak, quote, valueSubstitution, valueSubstitutionEnabled } = data

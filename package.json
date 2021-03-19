@@ -1,5 +1,5 @@
 {
-  "name": "Copy-CSS-&-React-Style",
+  "name": "copy-css-react-tailwind-style",
   "version": "1.0.0",
   "description": "Your Figma Plugin",
   "main": "code.js",
@@ -12,5 +12,8 @@
     "@figma/plugin-typings": "^1.15.0",
     "@types/react": "^16.9.35",
     "csstype": "^2.6.10"
+  },
+  "devDependencies": {
+    "adui": "^1.6.1-alpha.0"
   }
 }

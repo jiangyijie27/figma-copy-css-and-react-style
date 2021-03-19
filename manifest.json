@@ -1,5 +1,5 @@
 {
-  "name": "Copy CSS + React Style",
+  "name": "Copy CSS/React/Tailwind Style",
   "id": "849480985478663675",
   "api": "1.0.0",
   "main": "code.js",
@@ -12,6 +12,10 @@
     {
       "name": "Copy React Style",
       "command": "react"
+    },
+    {
+      "name": "Copy Tailwind Class",
+      "command": "tailwind"
     },
     {
       "name": "Settings",
