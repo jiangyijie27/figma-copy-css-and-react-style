@@ -663,6 +663,7 @@ figma.clientStorage.getAsync(storageKey).then((result) => {
               56: "56px",
               64: "64px",
               84: "84px",
+              100: "100px",
               120: "120px",
             },
             // 待设计规范引入
@@ -1444,7 +1445,7 @@ figma.clientStorage.getAsync(storageKey).then((result) => {
 
         console.log(finalClassName, unusedStyle, tailwindReplacements)
         figma.ui.postMessage({
-          copiedText: finalClassName.join("\n"),
+          copiedText: finalClassName.join(" "),
           unusedStyle,
           type: "tailwind",
         })
