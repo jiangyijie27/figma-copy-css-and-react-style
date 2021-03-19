@@ -548,6 +548,7 @@ figma.clientStorage.getAsync(storageKey).then((result) => {
                             48: "48px",
                             52: "52px",
                             56: "56px",
+                            60: "60px",
                             64: "64px",
                             84: "84px",
                             100: "100px",
